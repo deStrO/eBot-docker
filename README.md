@@ -6,6 +6,9 @@ It is a containerized version of eBot, which is a full managed server-bot writte
 ## How to run it
 You should download the repository content, place it in a folder, and then execute the following commands in the specified order:
 ```
+cp .env.sample .env
+chmod a+x setup.sh configure.sh
+./setup.sh
 docker-compose build
 docker-compose up
 ```

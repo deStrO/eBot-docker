@@ -32,14 +32,6 @@
           "path": "logs",
           "split": true
         }
-      },
-      {
-        "path": "src/logs-receiver/plugins/mapper.ts",
-        "config": {
-          "mapping": {
-            "127.0.0.1:27015": "192.168.0.1:27015"
-          }
-        }
       }
     ]
   }

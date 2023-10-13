@@ -1,28 +1,36 @@
 version: '3'
 services:
-    ebotweb:
+    ebot-web:
         build:
-            context: ./ebotweb
+            context: ./ebot-web
+        environment:
+            - EBOT_ADMIN_LOGIN
+            - EBOT_ADMIN_PASSWORD
+            - EBOT_ADMIN_EMAIL
         volumes:
             - "eBotWebVolume:/app/eBot-CSGO-Web"
+            - "./ebot-logs:/app/ebot-logs"
+            - "./ebot-demos:/app/ebot-demos"
             - "./etc/eBotWeb/app_user.yml:/app/eBot-CSGO-Web/config/app_user.yml"
             - "./etc/eBotWeb/databases.yml:/app/eBot-CSGO-Web/config/databases.yml"
         depends_on:
             - mysqldb
-    ebotsocket:
+    ebot-socket:
         build:
-            context: ./ebotsocket
+            context: ./ebot-socket
         ports:
             - "12360:12360"
         volumes:
+            - "./ebot-logs:/app/eBot-CSGO/logs"
+            - "./ebot-demos:/app/eBot-CSGO/demos"
             - "./etc/eBotSocket/config.ini:/app/eBot-CSGO/config/config.ini"
         depends_on:
             - mysqldb
-            - ebotweb
+            - ebot-web
             - redis
-    ebotlogreceiver:
+    ebot-logs-receiver:
         build:
-            context: ./ebotlogreceiver
+            context: ./ebot-logs-receiver
         ports:
             - "12345:12345"
         volumes:
@@ -33,10 +41,10 @@ services:
         image: biarms/mysql:5.7
         restart: always
         environment:
-            - MYSQL_DATABASE=ebotv3
-            - MYSQL_ROOT_PASSWORD=7w£6GfV0z92
-            - MYSQL_USER=ebotv3
-            - MYSQL_PASSWORD=7w£6GfV0z92
+            - MYSQL_DATABASE
+            - MYSQL_ROOT_PASSWORD
+            - MYSQL_USER
+            - MYSQL_PASSWORD
         volumes:
             - "./data/db/mysql:/var/lib/mysql"
     redis:
@@ -54,7 +62,7 @@ services:
             - "443:443"
         restart: always
         depends_on:
-            - ebotweb
+            - ebot-web
             - mysqldb
 volumes:
   eBotWebVolume:
