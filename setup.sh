@@ -94,6 +94,25 @@ EBOT_IP=$(ask_with_default "Log address server" $EBOT_IP)
 sed -i -e "s#EBOT_IP=.*#EBOT_IP=${EBOT_IP}#g" \
     "$(dirname "$0")/.env"
 
+echo "Finally, eBot now supports SSL, and then the customization of the domain name / URL for the websocket."
+echo "This SSL configuration must be done on your side (using letsencrypt by example)"
+if yesNo "Will you be using SSL ?"
+then
+   WEBSOCKET_URL=$(ask_with_default "What will you be using as domain / url for the websocket server" $WEBSOCKET_URL)
+   sed -i -e "s#WEBSOCKET_URL=.*#WEBSOCKET_URL=${WEBSOCKET_URL}#g" \
+       "$(dirname "$0")/.env"
+
+   echo "Don't forget to create a reverse proxy for the websocket server, that normally listen on 12360"
+   sleep 5
+else
+    if [ "$WEBSOCKET_URL" = "replaceme" ]
+    then
+        echo "Replacing WEBSOCKET_URL with EBOT_IP value"
+        sed -i -e "s#WEBSOCKET_URL=.*#WEBSOCKET_URL=http://${EBOT_IP}:12360#g" \
+            "$(dirname "$0")/.env"
+    fi
+fi
+
 if yesNo "Would you like regenerate all configuration files ?"
 then
     ./configure.sh

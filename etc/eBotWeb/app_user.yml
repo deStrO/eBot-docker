@@ -8,6 +8,7 @@
 
   default_max_round: 12
   default_rules: rules
+  default_overtime_enable: false
   default_overtime_max_round: 3
   default_overtime_startmoney: 16000
 
@@ -16,6 +17,7 @@
 
   demo_download: true
 
+  websocket_url: http://127.0.0.1:12360
   ebot_ip: 127.0.0.1
   ebot_port: 12360
 

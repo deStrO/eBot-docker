@@ -9,21 +9,6 @@ cyan='\e[1;36m%s\e[0m\n'
 
 printf "$green" "eBot configuration script"
 
-# eBot configuration
-EBOT_IP=10.10.10.91
-LOG_ADDRESS_SERVER=http://10.10.10.91:12345
-EBOT_ADMIN_LOGIN=admin
-EBOT_ADMIN_PASSWORD=admin
-EBOT_ADMIN_EMAIL=admin@tset.com
-WEBSOCKET_SECRET_KEY=f0ad422482332a9a9a4fbcfaaa65a696
-COMMAND_STOP_DISABLED=true
-
-# Database configuration
-MYSQL_USER=ebotv3
-MYSQL_DATABASE=ebotv3
-MYSQL_PASSWORD=a3368dabb311bb66540e9bb9030714e7
-MYSQL_ROOT_PASSWORD=501e0a10b2702be5350915784ad2aca1
-
 source .env
 echo "Patching ./etc/eBotSocket/config.ini"
 cp ./etc/eBotSocket/config.ini ./etc/eBotSocket/config.ini.bak
@@ -45,6 +30,7 @@ sed -i "s|log_match_admin:.*|log_match_admin: /app/ebot-logs/log_match_admin|" .
 sed -i "s|demo_path:.*|demo_path: /app/ebot-demos|" ./etc/eBotWeb/app_user.yml
 sed -i "s|websocket_secret_key:.*|websocket_secret_key: $WEBSOCKET_SECRET_KEY|" ./etc/eBotWeb/app_user.yml
 sed -i "s|ebot_ip:.*|ebot_ip: $EBOT_IP|g" ./etc/eBotWeb/app_user.yml
+sed -i "s|websocket_url:.*|websocket_url: $WEBSOCKET_URL|g" ./etc/eBotWeb/app_user.yml
 
 echo "Patching ./etc/eBotWeb/database.yml"
 cp ./etc/eBotWeb/databases.yml ./etc/eBotWeb/databases.yml.bak
